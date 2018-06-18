@@ -58,7 +58,10 @@ router.post('/:sectionID/post', function(req, res, next) {
 router.get('/:sectionID/post/:postID', function(req, res, next) {
     var sectionID = req.params['sectionID'];
     var postID = req.params['postID'];
-    forum.toggleVisitIncrease(sectionID, postID);
+    forum.toggleVisitIncrease(sectionID, postID, function(err, result){
+      if(err) console.log(err);
+      console.log(result);
+    });
     forum.getPostDetail(sectionID, postID, function(err, result){
         if(err) console.log(err);
         console.log(result);
