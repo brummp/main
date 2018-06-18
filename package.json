@@ -1,0 +1,19 @@
+{
+  "name": "main",
+  "version": "1.0.0",
+  "description": "main code",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "hwfhc",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "connect-multiparty": "^2.1.0",
+    "express": "^4.16.3",
+    "forum": "git+https://github.com/brummp/forum.git",
+    "mongodb": "^3.0.10"
+  }
+}
