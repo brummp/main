@@ -58,6 +58,8 @@ router.post('/:sectionID/post', function(req, res, next) {
 router.get('/:sectionID/post/:postID', function(req, res, next) {
     var sectionID = req.params['sectionID'];
     var postID = req.params['postID'];
+    console.log(sectionID)
+    console.log(postID)
     forum.toggleVisitIncrease(sectionID, postID, function(err, result){
       if(err) console.log(err);
       console.log(result);
@@ -68,7 +70,7 @@ router.get('/:sectionID/post/:postID', function(req, res, next) {
         var sendData = {
             "code" : 1,
             "message" : "SUCCESS",
-            "data" : result
+            "data" : result[0]
         };
         res.jsonp(sendData);
     });
@@ -100,6 +102,7 @@ router.post('/:sectionID/post/:postID', function(req, res, next) {
 router.get('/:sectionID/post/:postID/comment', function(req, res, next) {
     var sectionID = req.params['sectionID'];
     var postID = req.params['postID'];
+    console.log(11)
     forum.getAllComment(sectionID, postID, function(err, result){
         if(err) console.log(err);
         console.log(result);

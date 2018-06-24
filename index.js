@@ -13,9 +13,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use('/forum', forum);
 
-app.use(express.static(path.join(__dirname,'./public')))
+app.use(express.static(path.join(__dirname,'../front/dist')))
 app.get('/', (req,res) =>
-    res.sendFile(path.join(__dirname, './public/index.html')));
+    res.sendFile(path.join(__dirname, '../front/dist/index.html')));
 
 
 app.listen(8080, () => console.log('start'))
