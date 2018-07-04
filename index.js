@@ -9,6 +9,7 @@ var multipart = require('connect-multiparty');//用于处理AJAX表单
 
 var multipartMiddleware = multipart();
 
+app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use('/forum', forum);
