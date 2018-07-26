@@ -25,20 +25,18 @@ router.get('/:sectionID/post', function(req, res, next) {
 
 router.post('/:sectionID/post', function(req, res, next) {
     var sectionID = req.params['sectionID'];
-    console.log(req)
+
     var data = {
-        title: req.body.title,
-        author: req.body.author,
+        post_title: req.body.post_title,
+        post_author: req.body.post_author,
         tag: [0],
-        content: req.body.content
+        post_content: req.body.post_content
     };
 
     var dataToSend;
 
     forum.submitPost(sectionID, data, function(err, result){
         if(err) console.log(err);
-
-        console.log(result);
 
         if(result)
             dataToSend = {
