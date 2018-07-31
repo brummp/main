@@ -165,7 +165,7 @@ finalhandler@1.1.1:
 
 "forum@git+https://github.com/brummp/forum.git":
   version "0.0.4"
-  resolved "git+https://github.com/brummp/forum.git#6ffa8e18553d7f638d13d1319b763dc3965e14f4"
+  resolved "git+https://github.com/brummp/forum.git#e0621806a2c170f4b8cac80cfaa0426ee286180b"
   dependencies:
     express "^4.16.3"
     kqudie "git+https://github.com/brummp/kqudie.git"
@@ -217,7 +217,7 @@ ipaddr.js@1.8.0:
 
 "kqudie@git+https://github.com/brummp/kqudie.git":
   version "0.2.0"
-  resolved "git+https://github.com/brummp/kqudie.git#8a19d7e5a3e8d03a68df4ca345ac9873baf6b6c7"
+  resolved "git+https://github.com/brummp/kqudie.git#f3d937c5438d506b8244b14fd747260321f4e6f0"
   dependencies:
     mongodb "^3.0.7"
 

@@ -76,7 +76,7 @@ router.get('/:sectionID/post/:postID', async function (req, res) {
 router.post('/:sectionID/post/:postID', async function (req, res) {
     var sectionID = req.params['sectionID'];
     var postID = req.params['postID'];
-    var data = req.body.data;
+    var data = req.body;
 
     try {
         var result = await forum.updatePostDetail(sectionID, postID, data);
@@ -118,7 +118,7 @@ router.get('/:sectionID/post/:postID/comment', async function (req, res) {
 router.post('/:sectionID/post/:postID/comment', async function(req, res) {
     var sectionID = req.params['sectionID'];
     var postID = req.params['postID'];
-    var data = req.body.data;
+    var data = req.body;
 
     try {
         await forum.submitComment(sectionID, postID, data);
