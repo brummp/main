@@ -1,9 +1,10 @@
 const express = require('express');
 const path = require('path');
+const config = require('./config');
 
 var app = express();
 
-var forum = require('./routes/forum');
+var forum = require('./routes/forum')(config);
 var bodyParser = require('body-parser');//用于处理表单数据
 var multipart = require('connect-multiparty');//用于处理AJAX表单
 
