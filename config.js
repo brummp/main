@@ -1,10 +1,11 @@
-export default { 
-  URL: 'mongodb://www.lrworkshop.xin:27017/',
+module.exports = { 
+  URL: 'mongodb://localhost:27017/',
   DATABASE: 'ISInformationPlatform',
   forum: [
     {
       section_id: 1,
-      collection: 'post_work',
+      post_collection: 'post_work',
+      comment_collection: 'comment_work',
       title: '工作',
       type: [
         [
@@ -17,7 +18,8 @@ export default {
     },
     {
       section_id: 2,
-      collection: 'post_abroad',
+      post_collection: 'post_abroad',
+      comment_collection: 'comment_abroad',
       title: '出国',
       type: [
         [
@@ -36,7 +38,8 @@ export default {
     },
     {
       section_id: 3,
-      collection: 'post_graduate',
+      post_collection: 'post_graduate',
+      comment_collection: 'comment_graduate',
       title: '读研',
       type: [
         [

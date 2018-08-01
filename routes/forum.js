@@ -1,159 +1,158 @@
-const forum = require('forum');
 const express = require('express');
+var router = module.exports = function(config1){
+    const forum = require('forum')(config1);
+    var router = express.Router();
+    router.get('/:sectionID/post', async function(req, res) {
+        var sectionID = parseInt(req.params['sectionID']);
 
-var router = express.Router();
+        try {
+            var result = await forum.getAllPost(sectionID);
+        } catch (error) {
+            throw error;
+        }
 
-router.get('/:sectionID/post', async function(req, res) {
-    var sectionID = req.params['sectionID'];
+        sendData = {
+            "status": 1,
+            "message": "SUCCESS",
+            "data": result
+        };
 
-    try {
-        var result = await forum.getAllPost(sectionID);
-    } catch (error) {
-        throw error;
-    }
-
-    sendData = {
-        "status": 1,
-        "message": "SUCCESS",
-        "data": result
-    };
-
-    res.jsonp(sendData);
-});
+        res.jsonp(sendData);
+    });
 
 /*
  * title author tag content
  */
 
-router.post('/:sectionID/post', async function (req, res) {
-    var sectionID = req.params['sectionID'];
+    router.post('/:sectionID/post', async function (req, res) {
+        var sectionID = parseInt(req.params['sectionID']);
 
-    var data = {
-        post_title: req.body.post_title,
-        post_author: req.body.post_author,
-        tag: [0],
-        post_content: req.body.post_content
-    };
+        var data = {
+            post_title: req.body.post_title,
+            post_author: req.body.post_author,
+            tag: [0],
+            post_content: req.body.post_content
+        };
 
-    var dataToSend;
+        var dataToSend;
 
-    let result = await forum.submitPost(sectionID, data);
+        let result = await forum.submitPost(sectionID, data);
 
-    if (result)
-        dataToSend = {
+        if (result)
+            dataToSend = {
+                "code": 1,
+                "message": "SUCCESS"
+            };
+        else
+            dataToSend = {
+                "code": 2,
+                "message": "UNKNOWN_ERR"
+            };
+
+        res.jsonp(dataToSend);
+    });
+
+    router.get('/:sectionID/post/:postID', async function (req, res) {
+        var sectionID = parseInt(req.params['sectionID']);
+        var postID = req.params['postID'];
+
+        try {
+            await forum.toggleVisitIncrease(sectionID, postID);
+            var result = await forum.getPostDetail(sectionID, postID);
+        } catch (error) {
+            throw error;
+        }
+
+        var sendData = {
             "code": 1,
-            "message": "SUCCESS"
-        };
-    else
-        dataToSend = {
-            "code": 2,
-            "message": "UNKNOWN_ERR"
+            "message": "SUCCESS",
+            "data": result[0]
         };
 
-    res.jsonp(dataToSend);
-});
+        res.jsonp(sendData);
+    });
 
-router.get('/:sectionID/post/:postID', async function (req, res) {
-    var sectionID = req.params['sectionID'];
-    var postID = req.params['postID'];
+    router.post('/:sectionID/post/:postID', async function (req, res) {
+        var sectionID = parseInt(req.params['sectionID']);
+        var postID = req.params['postID'];
+        var data = req.body;
 
-    try {
-        await forum.toggleVisitIncrease(sectionID, postID);
-        var result = await forum.getPostDetail(sectionID, postID);
-    } catch (error) {
-        throw error;
-    }
+        try {
+            var result = await forum.updatePostDetail(sectionID, postID, data);
+        } catch (error) {
+            throw error;
+        }
 
-    var sendData = {
-        "code": 1,
-        "message": "SUCCESS",
-        "data": result[0]
-    };
+        let dataToSend;
 
-    res.jsonp(sendData);
-});
+        if (result) {
+            dataToSend = {
+                "code": 1,
+                "message": "SUCCESS"
+            };
+        } else {
+            dataToSend = {
+                "code": 2,
+                "message": "UNKNOWN_ERR"
+            };
+        }
 
-router.post('/:sectionID/post/:postID', async function (req, res) {
-    var sectionID = req.params['sectionID'];
-    var postID = req.params['postID'];
-    var data = req.body;
+        res.jsonp(dataToSend);
+    });
 
-    try {
-        var result = await forum.updatePostDetail(sectionID, postID, data);
-    } catch (error) {
-        throw error;
-    }
+    router.get('/:sectionID/post/:postID/comment', async function (req, res) {
+        var sectionID = parseInt(req.params['sectionID']);
+        var postID = req.params['postID'];
 
-    let dataToSend;
-
-    if (result) {
-        dataToSend = {
+        let result = await forum.getAllComment(sectionID, postID);
+        var sendData = {
             "code": 1,
-            "message": "SUCCESS"
+            "message": "SUCCESS",
+            "data": result
         };
-    } else {
-        dataToSend = {
-            "code": 2,
-            "message": "UNKNOWN_ERR"
-        };
-    }
 
-    res.jsonp(dataToSend);
-});
+        res.jsonp(sendData);
+    });
 
-router.get('/:sectionID/post/:postID/comment', async function (req, res) {
-    var sectionID = req.params['sectionID'];
-    var postID = req.params['postID'];
+    router.post('/:sectionID/post/:postID/comment', async function(req, res) {
+        var sectionID = parseInt(req.params['sectionID']);
+        var postID = req.params['postID'];
+        var data = req.body;
 
-    let result = await forum.getAllComment(sectionID, postID);
-    var sendData = {
-        "code": 1,
-        "message": "SUCCESS",
-        "data": result
-    };
+        try {
+            await forum.submitComment(sectionID, postID, data);
+        } catch (error) {
+            throw error;
+        }
 
-    res.jsonp(sendData);
-});
-
-router.post('/:sectionID/post/:postID/comment', async function(req, res) {
-    var sectionID = req.params['sectionID'];
-    var postID = req.params['postID'];
-    var data = req.body;
-
-    try {
-        await forum.submitComment(sectionID, postID, data);
-    } catch (error) {
-        throw error;
-    }
-
-    var successMsg = {
-        "code": 1,
-        "message": "SUCCESS"
-    };
-    res.jsonp(successMsg);
-});
-
-router.post('/:sectionID/post/:postID/comment/:commentID', async function(req, res) {
-    var sectionID = req.params['sectionID'];
-    var postID = req.params['postID'];
-    var commentID = req.params['commentID'];
-    var data = req.body.data;
-
-    let result = await forum.updateComment(sectionID, postID, commentID, data);
-
-    if (result) {
         var successMsg = {
             "code": 1,
             "message": "SUCCESS"
         };
         res.jsonp(successMsg);
-    } else {
-        var errMsg = {
-            "code": 2,
-            "message": "UNKNOWN_ERR"
-        };
-        res.jsonp(errMsg);
-    }
-});
+    });
 
-module.exports = router;
+    router.post('/:sectionID/post/:postID/comment/:commentID', async function(req, res) {
+        var sectionID = parseInt(req.params['sectionID']);
+        var postID = req.params['postID'];
+        var commentID = req.params['commentID'];
+        var data = req.body.data;
+
+        let result = await forum.updateComment(sectionID, postID, commentID, data);
+
+        if (result) {
+            var successMsg = {
+                "code": 1,
+                "message": "SUCCESS"
+        };
+            res.jsonp(successMsg);
+        } else {
+            var errMsg = {
+                "code": 2,
+                "message": "UNKNOWN_ERR"
+            };
+            res.jsonp(errMsg);
+        }
+    });
+    return router;
+}
