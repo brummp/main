@@ -1,7 +1,9 @@
 const express = require('express');
-var router = module.exports = function(config1){
-    const forum = require('forum')(config1);
+
+module.exports = function(config){
+    const forum = require('forum')(config);
     var router = express.Router();
+
     router.get('/:sectionID/post', async function(req, res) {
         var sectionID = parseInt(req.params['sectionID']);
 
@@ -16,13 +18,11 @@ var router = module.exports = function(config1){
             "message": "SUCCESS",
             "data": result
         };
-
-        res.jsonp(sendData);
     });
 
-/*
- * title author tag content
- */
+    /*
+     * title author tag content
+     */
 
     router.post('/:sectionID/post', async function (req, res) {
         var sectionID = parseInt(req.params['sectionID']);
@@ -144,7 +144,7 @@ var router = module.exports = function(config1){
             var successMsg = {
                 "code": 1,
                 "message": "SUCCESS"
-        };
+            };
             res.jsonp(successMsg);
         } else {
             var errMsg = {
@@ -154,5 +154,6 @@ var router = module.exports = function(config1){
             res.jsonp(errMsg);
         }
     });
+    
     return router;
 }

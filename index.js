@@ -1,5 +1,6 @@
 const express = require('express');
 const path = require('path');
+const config = require('./config');
 
 var app = express();
 var config = require('./config.js');

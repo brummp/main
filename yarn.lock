@@ -165,7 +165,7 @@ finalhandler@1.1.1:
 
 "forum@git+https://github.com/brummp/forum.git":
   version "0.0.4"
-  resolved "git+https://github.com/brummp/forum.git#e0621806a2c170f4b8cac80cfaa0426ee286180b"
+  resolved "git+https://github.com/brummp/forum.git#57b42dc4edd991a00bb14b2d0d1b8550ae681595"
   dependencies:
     express "^4.16.3"
     kqudie "git+https://github.com/brummp/kqudie.git"
