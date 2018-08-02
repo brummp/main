@@ -3,7 +3,6 @@ const path = require('path');
 const config = require('./config');
 
 var app = express();
-var config = require('./config.js');
 var forum = require('./routes/forum.js')(config);
 var notice = require('./routes/notification.js')(config);
 
