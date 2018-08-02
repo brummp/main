@@ -18,6 +18,8 @@ module.exports = function(config){
             "message": "SUCCESS",
             "data": result
         };
+        
+        res.jsonp(sendData);
     });
 
     /*
