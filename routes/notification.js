@@ -5,12 +5,14 @@ var router = module.exports = function(config1){
 
     router.get('/:sectionID/notice', async function(req, res) {
         var sectionID = parseInt(req.params['sectionID']);
+        var opt = {
+            page_num: req.query['page_num']
+        }
         try {
-            var result = await notice.getAllNotice(sectionID);
+            var result = await notice.getAllNotice(sectionID,opt);
         } catch (error) {
             throw error;
         }
-        console.log(result);
     
         sendData = {
             "status": 1,
@@ -36,7 +38,6 @@ var router = module.exports = function(config1){
         var dataToSend;
     
         let result = await notice.submitNotice(sectionID, data);
-        console.log(result);
         if (result)
             dataToSend = {
                 "code": 1,
