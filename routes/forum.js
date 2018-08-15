@@ -20,7 +20,7 @@ module.exports = function(config){
             "message": "SUCCESS",
             "data": result
         };
-        
+
         res.jsonp(sendData);
     });
 
@@ -158,6 +158,6 @@ module.exports = function(config){
             res.jsonp(errMsg);
         }
     });
-    
+
     return router;
 }

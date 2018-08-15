@@ -17,9 +17,13 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/forum', forum);
 app.use('/notification', notice);
 
-app.use(express.static(path.join(__dirname,'../front/dist')))
+app.use(express.static(path.join(__dirname,'dist')))
 app.get('/', (req,res) =>
-    res.sendFile(path.join(__dirname, '../front/dist/index.html')));
+    res.sendFile(path.join(__dirname, 'dist/index.html')));
+
+app.use(function(req,res){
+    res.send(404);
+})
 
 
-app.listen(8080, () => console.log('start'))
+app.listen(8081, () => console.log('service start'))
