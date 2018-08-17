@@ -6,8 +6,10 @@ module.exports = function(config){
 
     router.get('/:sectionID/post', async function (req, res) {
         var sectionID = parseInt(req.params['sectionID']);
+        
         var opt = {
-            page_num: req.query['page_num']
+            page_num: req.query['page_num'],
+            tag_filter: req.query['tag_filter'] || 0
         }
         try {
             var result = await forum.getAllPost(sectionID, opt);
@@ -34,7 +36,7 @@ module.exports = function(config){
         var data = {
             post_title: req.body.post_title,
             post_author: req.body.post_author,
-            tag: [0],
+            post_tag: req.body.post_tag,
             post_content: req.body.post_content
         };
 
