@@ -4,13 +4,13 @@ module.exports = function(config){
     const forum = require('forum')(config);
     var router = express.Router();
 
-    router.get('/:sectionID/post', async function(req, res) {
+    router.get('/:sectionID/post', async function (req, res) {
         var sectionID = parseInt(req.params['sectionID']);
-        opt={
-            page_num : req.query['page_num']
+        var opt = {
+            page_num: req.query['page_num']
         }
         try {
-            var result = await forum.getAllPost(sectionID,opt);
+            var result = await forum.getAllPost(sectionID, opt);
         } catch (error) {
             throw error;
         }
