@@ -66,9 +66,11 @@ module.exports = function(config){
             post_content: req.body.post_content
         };
 
+        var opt = {
+            sticky : req.body.sticky || false
+        }; 
         var dataToSend;
-
-        let result = await forum.submitPost(sectionID, data);
+        let result = await forum.submitPost(sectionID, data, opt);
 
         if (result)
             dataToSend = {
@@ -109,8 +111,12 @@ module.exports = function(config){
         var postID = req.params['postID'];
         var data = req.body;
 
+        var opt = {
+            stikcy : req.body.sticky || false
+        }
+
         try {
-            var result = await forum.updatePostDetail(sectionID, postID, data);
+            var result = await forum.updatePostDetail(sectionID, postID, data, opt);
         } catch (error) {
             throw error;
         }
