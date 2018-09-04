@@ -1,15 +1,28 @@
+const commander = require('commander');
 const express = require('express');
 const path = require('path');
-const config = require('./config');
 
 var app = express();
-var forum = require('./routes/forum.js')(config);
-var notice = require('./routes/notification.js')(config);
 
 var bodyParser = require('body-parser');//用于处理表单数据
 var multipart = require('connect-multiparty');//用于处理AJAX表单
 
 var multipartMiddleware = multipart();
+
+var config;
+
+commander
+    .option('-t --target', 'set dir of config file')
+    .action(function (path) {
+        if (typeof path != 'string')
+            config = require('./config');
+        else
+            config = require(path);
+    })
+    .parse(process.argv);
+
+var forum = require('./routes/forum.js')(config);
+var notice = require('./routes/notification.js')(config);
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));

@@ -26,8 +26,34 @@ module.exports = function(config){
         res.jsonp(sendData);
     });
 
-    /*
-     * title author tag content
+    /**
+     * @api {post} /:sectionID/post 发布新的帖子 
+     * @apiName 发帖
+     * @apiGroup forum
+     *
+     * @apiParam {Number} sectionID 发布帖子的板块ID.
+     * @apiParam {String} post_title 发布帖子的标题.
+     * @apiParam {String} post_author 发布帖子的作者.
+     * @apiParam {Number} post_tag 发布帖子的标签.
+     * @apiParam {String} post_content 发布帖子的正文内容.
+     *
+     * @apiSuccess {String} firstname Firstname of the User.
+     * @apiSuccess {String} lastname  Lastname of the User.
+     *
+     * @apiSuccessExample Success-Response:
+     *     HTTP/1.1 200 OK
+     *     {
+     *       "firstname": "John",
+     *       "lastname": "Doe"
+     *     }
+     *
+     * @apiError UserNotFound The id of the User was not found.
+     *
+     * @apiErrorExample Error-Response:
+     *     HTTP/1.1 404 Not Found
+     *     {
+     *       "error": "UserNotFound"
+     *     }
      */
 
     router.post('/:sectionID/post', async function (req, res) {

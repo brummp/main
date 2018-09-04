@@ -1,16 +1,22 @@
 {
   "name": "main",
   "version": "1.0.0",
-  "description": "main code",
+  "description": "帖子与公告模块路由层",
   "main": "index.js",
+  "apidoc": {
+    "title": "论坛模块",
+    "url": "http://localhost"
+  },
   "scripts": {
     "start": "node index.js",
+    "start:dev": "node index.js --dev",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "hwfhc",
   "license": "MIT",
   "dependencies": {
     "body-parser": "^1.18.3",
+    "commander": "^2.17.1",
     "connect-multiparty": "^2.1.0",
     "express": "^4.16.3",
     "forum": "git+http://github.com/brummp/forum.git",
@@ -19,6 +25,8 @@
     "yauzl": "^2.10.0"
   },
   "devDependencies": {
-    "download": "^7.1.0"
+    "apidoc": "^0.17.6",
+    "download": "^7.1.0",
+    "webpack-hot-middleware": "^2.22.3"
   }
 }
