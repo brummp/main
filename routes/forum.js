@@ -16,15 +16,15 @@ module.exports = function(config){
             var result = await forum.getAllPost(sectionID, opt);
         } catch (error) {
             throw error;
+            res.sendStatus(500);
         }
 
         sendData = {
-            "status": 1,
-            "message": "SUCCESS",
+            "message": "OK",
             "data": result
         };
 
-        res.jsonp(sendData);
+        res.status(200).jsonp(sendData);
     });
 
     /**
@@ -58,33 +58,59 @@ module.exports = function(config){
      */
 
     router.post('/:sectionID/post', async function (req, res) {
+        let dataToSend;
         var sectionID = parseInt(req.params['sectionID']);
-
-        var data = {
-            post_title: req.body.post_title,
-            post_author: req.body.post_author,
-            post_tag: req.body.post_tag,
-            post_content: req.body.post_content
-        };
-
-        var opt = {
-            sticky : req.body.sticky || false
-        }; 
-        var dataToSend;
-        let result = await forum.submitPost(sectionID, data, opt);
-
-        if (result)
+        if(!req.body.post_title){
             dataToSend = {
-                "code": 1,
-                "message": "SUCCESS"
+                "message": "标题不能为空"
             };
-        else
+            res.status(422).jsonp(dataToSend);
+        }
+        else if(!req.body.post_author){
             dataToSend = {
-                "code": 2,
-                "message": "UNKNOWN_ERR"
+                "message": "作者不能为空"
+            };
+            res.status(422).jsonp(dataToSend);
+        }
+        else if(!req.body.post_tag || !parseInt(req.body.post_tag) ){
+            dataToSend = {
+                "message": "标签为空或标签不合法"
+            };
+            res.status(422).jsonp(dataToSend);
+        }
+        else if(!req.body.post_content){
+            dataToSend = {
+                "message": "帖子内容不能为空"
+            };
+            res.status(422).jsonp(dataToSend);
+        }
+        else{
+            var data = {
+                post_title: req.body.post_title,
+                post_author: req.body.post_author,
+                post_tag: req.body.post_tag,
+                post_content: req.body.post_content
             };
 
-        res.jsonp(dataToSend);
+            var opt = {
+                sticky : req.body.sticky || false
+            }; 
+            let result = await forum.submitPost(sectionID, data, opt);
+
+            if (result){
+                dataToSend = {
+                    "message": "ok"
+                };
+                res.status(200).jsonp(dataToSend);
+            }
+            else{
+                dataToSend = {
+                    "message": "上传失败"
+                };
+                res.status(500).jsonp(dataToSend);
+            }
+        }
+      
     });
 
     router.get('/:sectionID/post/:postID', async function (req, res) {
@@ -96,47 +122,64 @@ module.exports = function(config){
             var result = await forum.getPostDetail(sectionID, postID);
         } catch (error) {
             throw error;
+            res.sendStatus(500);
         }
 
         var sendData = {
-            "code": 1,
-            "message": "SUCCESS",
+            "message": "OK",
             "data": result[0]
         };
 
-        res.jsonp(sendData);
+        res.status(200).jsonp(sendData);
     });
 
     router.post('/:sectionID/post/:postID', async function (req, res) {
         var sectionID = parseInt(req.params['sectionID']);
         var postID = req.params['postID'];
-        var data = req.body;
-
-        var opt = {
-            stikcy : req.body.sticky || false
-        }
-
-        try {
-            var result = await forum.updatePostDetail(sectionID, postID, data, opt);
-        } catch (error) {
-            throw error;
-        }
-
         let dataToSend;
-
-        if (result) {
+        if(!req.body.post_title){
             dataToSend = {
-                "code": 1,
-                "message": "SUCCESS"
+                "message": "标题不能为空"
             };
-        } else {
-            dataToSend = {
-                "code": 2,
-                "message": "UNKNOWN_ERR"
-            };
+            res.status(422).jsonp(dataToSend);
         }
+        else if(!req.body.post_author){
+            dataToSend = {
+                "message": "作者不能为空"
+            };
+            res.status(422).jsonp(dataToSend);
+        }
+        else if(!req.body.post_content){
+            dataToSend = {
+                "message": "帖子内容不能为空"
+            };
+            res.status(422).jsonp(dataToSend);
+        }
+        else{
+            var data = req.body;
+            var opt = {
+                stikcy : req.body.sticky || false
+            }
 
-        res.jsonp(dataToSend);
+            try {
+                var result = await forum.updatePostDetail(sectionID, postID, data, opt);
+            } catch (error) {
+                throw error;
+                res.sendStatus(500);
+            }
+
+            if (result) {
+                dataToSend = {
+                    "message": "OK"
+                };
+                res.status(200).jsonp(dataToSend);
+            } else {
+                dataToSend = {
+                    "message": "更新失败"
+                };
+                res.status(500).jsonp(dataToSend);
+            }
+        }
     });
 
     router.get('/:sectionID/post/:postID/comment', async function (req, res) {
@@ -145,52 +188,77 @@ module.exports = function(config){
 
         let result = await forum.getAllComment(sectionID, postID);
         var sendData = {
-            "code": 1,
-            "message": "SUCCESS",
+            "message": "OK",
             "data": result
         };
-
-        res.jsonp(sendData);
+        res.status(200).jsonp(sendData);
     });
 
     router.post('/:sectionID/post/:postID/comment', async function(req, res) {
         var sectionID = parseInt(req.params['sectionID']);
         var postID = req.params['postID'];
-        var data = req.body;
-
-        try {
-            await forum.submitComment(sectionID, postID, data);
-        } catch (error) {
-            throw error;
+        let dataToSend;
+        if(!req.body.comment_author){
+            dataToSend = {
+                "message": "评论作者不能为空"
+            };
+            res.status(422).jsonp(dataToSend);
         }
+        else if(!req.body.comment_content){
+            dataToSend = {
+                "message": "评论内容不能为空"
+            };
+            res.status(422).jsonp(dataToSend);
+        }
+        else{
+            var data = req.body;
+            try {
+                await forum.submitComment(sectionID, postID, data);
+            } catch (error) {
+                throw error;
+                res.sendStatus(500);
+            }
 
-        var successMsg = {
-            "code": 1,
-            "message": "SUCCESS"
-        };
-        res.jsonp(successMsg);
+            dataToSend = {
+                "message": "OK"
+            };
+            res.status(200).jsonp(dataToSend);
+        }
     });
 
     router.post('/:sectionID/post/:postID/comment/:commentID', async function(req, res) {
         var sectionID = parseInt(req.params['sectionID']);
         var postID = req.params['postID'];
         var commentID = req.params['commentID'];
-        var data = req.body.data;
-
-        let result = await forum.updateComment(sectionID, postID, commentID, data);
-
-        if (result) {
-            var successMsg = {
-                "code": 1,
-                "message": "SUCCESS"
+        let dataToSend;
+        if(!req.body.comment_author){
+            dataToSend = {
+                "message": "评论作者不能为空"
             };
-            res.jsonp(successMsg);
-        } else {
-            var errMsg = {
-                "code": 2,
-                "message": "UNKNOWN_ERR"
+            res.status(422).jsonp(dataToSend);
+        }
+        else if(!req.body.comment_content){
+            dataToSend = {
+                "message": "评论内容不能为空"
             };
-            res.jsonp(errMsg);
+            res.status(422).jsonp(dataToSend);
+        }
+        else{
+            var data = req.body.data;
+
+            let result = await forum.updateComment(sectionID, postID, commentID, data);
+
+            if (result) {
+                var successMsg = {
+                    "message": "OK"
+                };
+                res.status(200).jsonp(successMsg);
+            } else {
+                var errMsg = {
+                    "message": "更新失败"
+                };
+                res.status(500).jsonp(errMsg);
+            }
         }
     });
 
