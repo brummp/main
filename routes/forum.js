@@ -9,7 +9,8 @@ module.exports = function(config){
         
         var opt = {
             page_num: req.query['page_num'],
-            tag_filter: req.query['tag_filter'] || 0
+            tag_filter: req.query['tag_filter'] || 0,
+            sticky: req.query['sticky'] === 'true'
         }
         try {
             var result = await forum.getAllPost(sectionID, opt);

@@ -15,8 +15,7 @@ var router = module.exports = function(config1){
         }
 
         sendData = {
-            "status": 1,
-            "message": "SUCCESS",
+            "message": "ok",
             "data": result
         };
 
