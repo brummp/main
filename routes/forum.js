@@ -20,7 +20,7 @@ module.exports = function(config){
         }
 
         sendData = {
-            "message": "OK",
+            "message": "ok",
             "data": result
         };
 
@@ -126,7 +126,7 @@ module.exports = function(config){
         }
 
         var sendData = {
-            "message": "OK",
+            "message": "ok",
             "data": result[0]
         };
 
@@ -170,7 +170,7 @@ module.exports = function(config){
 
             if (result) {
                 dataToSend = {
-                    "message": "OK"
+                    "message": "ok"
                 };
                 res.status(200).jsonp(dataToSend);
             } else {
@@ -188,7 +188,7 @@ module.exports = function(config){
 
         let result = await forum.getAllComment(sectionID, postID);
         var sendData = {
-            "message": "OK",
+            "message": "ok",
             "data": result
         };
         res.status(200).jsonp(sendData);
@@ -220,7 +220,7 @@ module.exports = function(config){
             }
 
             dataToSend = {
-                "message": "OK"
+                "message": "ok"
             };
             res.status(200).jsonp(dataToSend);
         }
@@ -250,7 +250,7 @@ module.exports = function(config){
 
             if (result) {
                 var successMsg = {
-                    "message": "OK"
+                    "message": "ok"
                 };
                 res.status(200).jsonp(successMsg);
             } else {

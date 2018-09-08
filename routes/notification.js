@@ -124,7 +124,7 @@ var router = module.exports = function(config1){
 
             if (result) {
                 dataToSend = {
-                    "message": "OK"
+                    "message": "ok"
                 };
                 res.status(200).jsonp(dataToSend);
             } else {
