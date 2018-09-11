@@ -35,22 +35,24 @@ var router = module.exports = function(config1){
             };
             res.status(422).jsonp(dataToSend);
         }
-        else if(!req.body.notice_author){
+        if(!req.headers['user-id']){
             dataToSend = {
                 "message": "公告作者不能为空"
             };
             res.status(422).jsonp(dataToSend);
+            return ;
         }
-        else if(!req.body.notice_content){
+        if(!req.body.notice_content){
             dataToSend = {
                 "message": "公告内容不能为空"
             };
             res.status(422).jsonp(dataToSend);
+            return ;
         }
         else{
             var data = {
                 notice_title: req.body.notice_title,
-                notice_author: req.body.notice_author,
+                notice_author:req.headers['user-id'],
                 notice_content: req.body.notice_content
             };
         
@@ -99,22 +101,25 @@ var router = module.exports = function(config1){
                 "message": "公告标题不能为空"
             };
             res.status(422).jsonp(dataToSend);
+            return ;
         }
-        else if(!req.body.notice_author){
+        if(!req.headers['user-id']){
             dataToSend = {
                 "message": "公告作者不能为空"
             };
             res.status(422).jsonp(dataToSend);
+            return ;
         }
-        else if(!req.body.notice_content){
+        if(!req.body.notice_content){
             dataToSend = {
                 "message": "公告内容不能为空"
             };
             res.status(422).jsonp(dataToSend);
+            return ;
         }
         else{
             var data = req.body.data;
-
+            data.notice_author=req.headers['user-id'];
             try {
                 var result = await forum.updateNoticeList(sectionID, noticeID, data);
             } catch (error) {

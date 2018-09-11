@@ -65,29 +65,33 @@ module.exports = function(config){
                 "message": "标题不能为空"
             };
             res.status(422).jsonp(dataToSend);
+            return;
         }
-        else if(!req.body.post_author){
+        if(!req.headers['user-id']){
             dataToSend = {
                 "message": "作者不能为空"
             };
             res.status(422).jsonp(dataToSend);
+            return;
         }
-        else if(!req.body.post_tag || !parseInt(req.body.post_tag) ){
+        if(!req.body.post_tag || !parseInt(req.body.post_tag) ){
             dataToSend = {
                 "message": "标签为空或标签不合法"
             };
             res.status(422).jsonp(dataToSend);
+            return;
         }
-        else if(!req.body.post_content){
+        if(!req.body.post_content){
             dataToSend = {
                 "message": "帖子内容不能为空"
             };
             res.status(422).jsonp(dataToSend);
+            return;
         }
         else{
             var data = {
                 post_title: req.body.post_title,
-                post_author: req.body.post_author,
+                post_author: req.headers['user-id'],
                 post_tag: req.body.post_tag,
                 post_content: req.body.post_content
             };
@@ -142,21 +146,25 @@ module.exports = function(config){
                 "message": "标题不能为空"
             };
             res.status(422).jsonp(dataToSend);
+            return;
         }
-        else if(!req.body.post_author){
+        if(!req.headers['user-id']){
             dataToSend = {
                 "message": "作者不能为空"
             };
             res.status(422).jsonp(dataToSend);
+            return;
         }
-        else if(!req.body.post_content){
+        if(!req.body.post_content){
             dataToSend = {
                 "message": "帖子内容不能为空"
             };
             res.status(422).jsonp(dataToSend);
+            return;
         }
         else{
             var data = req.body;
+            data.post_author = req.headers['user-id'];
             var opt = {
                 stikcy : req.body.sticky || false
             }
@@ -203,15 +211,18 @@ module.exports = function(config){
                 "message": "评论作者不能为空"
             };
             res.status(422).jsonp(dataToSend);
+            return;
         }
-        else if(!req.body.comment_content){
+        if(!req.headers['user-id']){
             dataToSend = {
                 "message": "评论内容不能为空"
             };
             res.status(422).jsonp(dataToSend);
+            return ;
         }
         else{
             var data = req.body;
+            data.comment_author = req.headers['user-id'];
             try {
                 await forum.submitComment(sectionID, postID, data);
             } catch (error) {
@@ -231,21 +242,23 @@ module.exports = function(config){
         var postID = req.params['postID'];
         var commentID = req.params['commentID'];
         let dataToSend;
-        if(!req.body.comment_author){
+        if(!req.headers['user-id']){
             dataToSend = {
                 "message": "评论作者不能为空"
             };
             res.status(422).jsonp(dataToSend);
+            return ;
         }
-        else if(!req.body.comment_content){
+        if(!req.body.comment_content){
             dataToSend = {
                 "message": "评论内容不能为空"
             };
             res.status(422).jsonp(dataToSend);
+            return ;
         }
         else{
             var data = req.body.data;
-
+            data.comment_author = req.headers['user-id'];
             let result = await forum.updateComment(sectionID, postID, commentID, data);
 
             if (result) {
