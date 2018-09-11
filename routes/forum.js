@@ -6,11 +6,11 @@ module.exports = function(config){
 
     router.get('/:sectionID/post', async function (req, res) {
         var sectionID = parseInt(req.params['sectionID']);
-        
         var opt = {
             page_num: req.query['page_num'],
             tag_filter: req.query['tag_filter'] || 0,
-            sticky: req.query['sticky'] === 'true'
+            sticky: req.query['sticky'] === 'true',
+            find_filter: req.params['find_filter'] || 0
         }
         try {
             var result = await forum.getAllPost(sectionID, opt);
