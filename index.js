@@ -24,7 +24,9 @@ commander
 var forum = require('./routes/forum.js')(config);
 var notice = require('./routes/notification.js')(config);
 
-app.use(bodyParser.json());
+app.use(bodyParser.json({
+    limit: '5Mb'
+}));
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use('/forum', forum);
@@ -39,4 +41,4 @@ app.use(function(req,res){
 })
 
 
-app.listen(8081, () => console.log('service start'))
+app.listen(8082, () => console.log('service start'))

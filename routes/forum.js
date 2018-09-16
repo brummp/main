@@ -12,6 +12,8 @@ module.exports = function(config){
             sticky: req.query['sticky'] === 'true',
             find_filter: req.params['find_filter'] || 0
         }
+        if(req.query['person_post'] !== '0')
+            opt.person_post = req.query['person_post'];
         try {
             var result = await forum.getAllPost(sectionID, opt);
         } catch (error) {
@@ -60,6 +62,9 @@ module.exports = function(config){
     router.post('/:sectionID/post', async function (req, res) {
         let dataToSend;
         var sectionID = parseInt(req.params['sectionID']);
+
+        var post_tag = req.body.post_tag;
+
         if(!req.body.post_title){
             dataToSend = {
                 "message": "标题不能为空"
@@ -67,18 +72,17 @@ module.exports = function(config){
             res.status(422).jsonp(dataToSend);
             return;
         }
-        if(!req.headers['user-id']){
+        /*if(!req.headers['user-id']){
             dataToSend = {
                 "message": "作者不能为空"
             };
             res.status(422).jsonp(dataToSend);
             return;
-        }
-        if(!req.body.post_tag || !parseInt(req.body.post_tag) ){
-            dataToSend = {
-                "message": "标签为空或标签不合法"
-            };
-            res.status(422).jsonp(dataToSend);
+        }*/
+        if(typeof post_tag !== 'number'){
+            res.status(422).jsonp({
+                "message": "标签不合法"
+            });
             return;
         }
         if(!req.body.post_content){
@@ -91,7 +95,8 @@ module.exports = function(config){
         else{
             var data = {
                 post_title: req.body.post_title,
-                post_author: req.headers['user-id'],
+                // post_author: req.headers['user-id'],
+                post_author: req.body.post_author,
                 post_tag: req.body.post_tag,
                 post_content: req.body.post_content
             };
