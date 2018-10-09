@@ -12,8 +12,13 @@ module.exports = function(config){
             sticky: req.query['sticky'] === 'true',
             find_filter: req.params['find_filter'] || 0
         }
-        if(req.query['person_post'] !== '0')
+
+        if(req.query['person_post'])
             opt.person_post = req.query['person_post'];
+
+        if(req.query['search_text'])
+            opt.search_text = req.query['search_text'];
+
         try {
             var result = await forum.getAllPost(sectionID, opt);
         } catch (error) {

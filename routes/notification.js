@@ -35,13 +35,13 @@ var router = module.exports = function(config1){
             };
             res.status(422).jsonp(dataToSend);
         }
-        if(!req.headers['user-id']){
+        /* if(!req.headers['user-id']){
             dataToSend = {
                 "message": "公告作者不能为空"
             };
             res.status(422).jsonp(dataToSend);
             return ;
-        }
+        } */
         if(!req.body.notice_content){
             dataToSend = {
                 "message": "公告内容不能为空"
