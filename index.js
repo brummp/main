@@ -38,7 +38,7 @@ app.get('/', (req,res) =>
 
 app.use(function(req,res){
     res.send(404);
-})
+});
 
 
 app.listen(8081, () => console.log('service start'))

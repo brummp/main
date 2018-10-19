@@ -1,4 +1,5 @@
 const express = require('express');
+
 var router = module.exports = function(config1){
     const notice = require('notice')(config1);
     var router = express.Router();
