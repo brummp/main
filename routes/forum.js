@@ -1,4 +1,6 @@
 const express = require('express');
+const mongo = require('kqudie');
+
 var router = express.Router();
 var forum;
 
@@ -68,7 +70,9 @@ router.get('/:sectionID/post', async function (req, res) {
  */
 
 router.post('/:sectionID/post', async function (req, res) {
-    var userId = req.headers['User-Id'];
+    var userId = req.headers['user-id'];
+    var nickname = req.headers['user-nickname'];
+
     var sectionID = parseInt(req.params['sectionID']);
 
     var post_tag = req.body.post_tag;
@@ -95,7 +99,8 @@ router.post('/:sectionID/post', async function (req, res) {
 
     var data = {
         post_title: req.body.post_title,
-        post_author: userId,
+        post_author: mongo.String2ObjectId(userId),
+        post_nickname: nickname,
         post_tag: req.body.post_tag,
         post_content: req.body.post_content
     };
@@ -140,7 +145,7 @@ router.get('/:sectionID/post/:postID', async function (req, res) {
 });
 
 router.post('/:sectionID/post/:postID', async function (req, res) {
-    var userId = req.headers['User-Id'];
+    var userId = req.headers['user-id'];
 
     var sectionID = parseInt(req.params['sectionID']);
     var postID = req.params['postID'];
@@ -197,7 +202,8 @@ router.get('/:sectionID/post/:postID/comment', async function (req, res) {
 });
 
 router.post('/:sectionID/post/:postID/comment', async function (req, res) {
-    var userId = req.headers['User-Id'];
+    var userId = req.headers['user-id'];
+    var nickname = req.headers['user-nickname'];
 
     var sectionID = parseInt(req.params['sectionID']);
     var postID = req.params['postID'];
@@ -214,7 +220,8 @@ router.post('/:sectionID/post/:postID/comment', async function (req, res) {
 
     var data = {
         comment_content: req.body.comment_content,
-        comment_author: userId
+        comment_author: userId,
+        comment_nickname: nickname
     };
 
     try {
@@ -231,7 +238,8 @@ router.post('/:sectionID/post/:postID/comment', async function (req, res) {
 });
 
 router.post('/:sectionID/post/:postID/comment/:commentID', async function (req, res) {
-    var userId = req.headers['User-Id'];
+    var userId = req.headers['user-id'];
+    var nickname = req.headers['user-nickname'];
 
     var sectionID = parseInt(req.params['sectionID']);
     var postID = req.params['postID'];
@@ -249,7 +257,8 @@ router.post('/:sectionID/post/:postID/comment/:commentID', async function (req, 
 
     var data = {
         comment_content: req.body.comment_content,
-        comment_author: userId
+        comment_author: userId,
+        comment_nickname: nickname
     };
 
     try {
